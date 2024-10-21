@@ -1,15 +1,15 @@
-<div class="container mt-4" *ngIf="!quizCompleted">
-    <h1 class="text-center">Quiz: {{ selectedQuiz?.title }}</h1>
-    <p class="text-center">{{ selectedQuiz?.description }}</p>
-  
-    <form (ngSubmit)="submitQuiz()">
-      <div *ngFor="let question of selectedQuiz?.questions; let i = index" class="mb-4">
-        <div class="question">
-          <p class="fw-bold">{{ question.text }}</p>
-  
-          <div *ngFor="let answer of question.answers" class="form-check">
-            <ng-container [ngSwitch]="answer.type">
-              <div *ngSwitchCase="getAnswerType().SINGLE_CHOICE">
+<div class="container mt-5">
+  <h1 class="text-center mb-4">Developer Quiz</h1>
+  <form (ngSubmit)="onSubmit()" *ngIf="!quizCompleted">
+    <div *ngFor="let question of selectedQuiz?.questions; let i = index" class="mb-4">
+      <div class="card">
+        <div class="card-header">
+          <h5>{{ i + 1 }}. {{ question.text }}</h5>
+        </div>
+        <div class="card-body">
+          <ng-container [ngSwitch]="question.type">
+            <div *ngSwitchCase="getAnswerType().SINGLE">
+              <div *ngFor="let answer of question.answers" class="form-check">
                 <input
                   type="radio"
                   [name]="'question' + i"
@@ -22,7 +22,9 @@
                   {{ answer.text }}
                 </label>
               </div>
-              <div *ngSwitchCase="getAnswerType().MULTIPLE_CHOICE">
+            </div>
+            <div *ngSwitchCase="getAnswerType().MULTIPLE">
+              <div *ngFor="let answer of question.answers" class="form-check">
                 <input
                   type="checkbox"
                   [(ngModel)]="answer.selected"
@@ -33,29 +35,20 @@
                   {{ answer.text }}
                 </label>
               </div>
-              <div *ngSwitchCase="getAnswerType().TEXT">
-                <input
-                  type="text"
-                  [(ngModel)]="answer.text"
-                  class="form-control"
-                  placeholder="Type your answer here"
-                />
-              </div>
-            </ng-container>
-          </div>
+            </div>
+          </ng-container>
         </div>
       </div>
-  
-      <div class="text-center">
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </div>
-    </form>
-  </div>
-  
+    </div>
+    <div class="text-center">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+  </form>
+
   <div class="container mt-4" *ngIf="quizCompleted">
     <h2 class="text-center">Your Score</h2>
     <p class="text-center fs-4">
       Your score is: <span class="fw-bold">{{ score }}/{{ selectedQuiz?.questions?.length }}</span>
     </p>
   </div>
-  
+</div>

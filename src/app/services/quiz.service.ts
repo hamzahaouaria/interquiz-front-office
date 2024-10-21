@@ -19,20 +19,20 @@ export class QuizService {
           id: '1',
           text: 'What is the capital of France?',
           answers: [
-            { id: '1', text: 'Berlin', is_correct: false, type: AnswerType.SINGLE_CHOICE },
-            { id: '2', text: 'Madrid', is_correct: false, type: AnswerType.SINGLE_CHOICE },
-            { id: '3', text: 'Paris', is_correct: true, type: AnswerType.SINGLE_CHOICE },
-            { id: '4', text: 'Lisbon', is_correct: false, type: AnswerType.SINGLE_CHOICE }
+            { id: '1', text: 'Berlin', is_correct: false, type: AnswerType.SINGLE },
+            { id: '2', text: 'Madrid', is_correct: false, type: AnswerType.SINGLE },
+            { id: '3', text: 'Paris', is_correct: true, type: AnswerType.SINGLE },
+            { id: '4', text: 'Lisbon', is_correct: false, type: AnswerType.SINGLE }
           ]
         },
         {
           id: '2',
           text: 'Which language is used for web development?',
           answers: [
-            { id: '1', text: 'Python', is_correct: false, type: AnswerType.SINGLE_CHOICE },
-            { id: '2', text: 'Java', is_correct: false, type: AnswerType.SINGLE_CHOICE },
-            { id: '3', text: 'JavaScript', is_correct: true, type: AnswerType.SINGLE_CHOICE },
-            { id: '4', text: 'C#', is_correct: false, type: AnswerType.SINGLE_CHOICE }
+            { id: '1', text: 'Python', is_correct: false, type: AnswerType.SINGLE },
+            { id: '2', text: 'Java', is_correct: false, type: AnswerType.SINGLE },
+            { id: '3', text: 'JavaScript', is_correct: true, type: AnswerType.SINGLE },
+            { id: '4', text: 'C#', is_correct: false, type: AnswerType.SINGLE }
           ]
         }
       ]
