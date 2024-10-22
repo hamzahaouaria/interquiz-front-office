@@ -2,7 +2,7 @@ import { Role } from './role.model';
 import { Authority } from './authority.model';
 
 export interface User {
-  id: string; // UUID
+  id: number; // UUID
   username: string;
   password: string;
   email: string;

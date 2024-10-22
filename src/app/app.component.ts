@@ -1,15 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
+import { PreloaderService, SettingsService } from '@core';
 import { RouterOutlet } from '@angular/router';
-import { SharedModule } from './shared/shared.module';
-import { DeveloperQuizComponent } from './feature/developer-quiz/developer-quiz.component';
 
 @Component({
   selector: 'app-root',
+  template: `<router-outlet />`,
   standalone: true,
-  imports: [RouterOutlet, SharedModule, DeveloperQuizComponent],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+  imports: [RouterOutlet],
 })
-export class AppComponent {
-  title = 'interquiz';
+export class AppComponent implements OnInit, AfterViewInit {
+  private readonly preloader = inject(PreloaderService);
+  private readonly settings = inject(SettingsService);
+
+  ngOnInit() {
+    this.settings.setDirection();
+    this.settings.setTheme();
+  }
+
+  ngAfterViewInit() {
+    this.preloader.hide();
+  }
 }

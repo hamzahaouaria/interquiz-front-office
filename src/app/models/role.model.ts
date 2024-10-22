@@ -1,7 +1,7 @@
 import { Authority } from './authority.model';
 
 export interface Role {
-  id: string; // UUID
+  id: number; // UUID
   name: string;
   authorities?: Authority[];
 }

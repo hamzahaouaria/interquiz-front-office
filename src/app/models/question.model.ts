@@ -1,8 +1,11 @@
+import { AnswerType } from './answer-type.enum';
 import { Answer } from './answer.model';
 
 export interface Question {
-  id: string; // UUID
-  text: string;
+  id: number; // UUID
+  questionText: string;
   answers?: Answer[];
-  selectedOption?: string;
+  explanation?:string,
+  type?:AnswerType
+
 }

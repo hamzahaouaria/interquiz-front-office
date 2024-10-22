@@ -1,1 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
+@use 'styles/reboot';
+@use 'styles/themes';
+@use 'styles/colors';
+@use 'styles/grid';
+@use 'styles/helpers';
+@use 'styles/plugins';
+@use 'styles/custom';
+
+
+
+  .text-success {
+    .mdc-label {
+        color: rgb(11, 126, 11) !important; // Bootstrap primary color
+    }
+  }
+  
+  .text-danger {
+    .mdc-label {
+      color: red !important; // Bootstrap danger color
+    }
+  }

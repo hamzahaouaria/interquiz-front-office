@@ -79,3 +79,18 @@ button {
   margin-top: 1rem;
   color: $primary-color;
 }
+
+.mission-form-card {
+  width: 100%; /* Ensure the card itself is full width */
+}
+
+.mat-form-field {
+  width: 100%; /* Ensure the form field is full width */
+}
+
+textarea {
+  width: 100%; /* Ensure the textarea takes full width */
+}
+
+
+
