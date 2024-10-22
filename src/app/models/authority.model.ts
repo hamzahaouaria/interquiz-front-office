@@ -1,4 +1,4 @@
 export interface Authority {
-  id: string; // UUID
+  id: number; // UUID
   name: string;
 }

@@ -6,3 +6,17 @@
 @use 'styles/helpers';
 @use 'styles/plugins';
 @use 'styles/custom';
+
+
+
+  .text-success {
+    .mdc-label {
+        color: rgb(11, 126, 11) !important; // Bootstrap primary color
+    }
+  }
+  
+  .text-danger {
+    .mdc-label {
+      color: red !important; // Bootstrap danger color
+    }
+  }

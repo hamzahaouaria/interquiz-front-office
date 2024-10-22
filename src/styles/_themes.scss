@@ -19,6 +19,10 @@ $light-config: (
   ),
 );
 
+$primary: mat.$azure-palette;
+$success: mat.$green-palette;
+$danger: mat.$red-palette;
+
 $light-theme: mat.private-deep-merge-all(
   mat.define-theme($light-config),
   mtx.define-theme($light-config)

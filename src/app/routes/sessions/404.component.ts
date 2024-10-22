@@ -7,7 +7,7 @@ import { ErrorCodeComponent } from '@shared/components/error-code/error-code.com
     <error-code
       code="404"
       title="Page not found!"
-      message="This is not the web page you are looking for."
+      message="This is not the web page you are looking for ,ozd."
     />
   `,
   standalone: true,

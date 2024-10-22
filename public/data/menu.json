@@ -11,6 +11,16 @@
       }
     },
     {
+      "route": "quizzes",
+      "name": "quizzes",
+      "type": "link",
+      "icon": "quizzes",
+      "badge": {
+        "color": "red-50",
+        "value": "5"
+      }
+    },
+    {
       "route": "/",
       "name": "sessions",
       "type": "sub",

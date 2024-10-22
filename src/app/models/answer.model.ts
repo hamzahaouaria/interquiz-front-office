@@ -1,9 +1,8 @@
 import { AnswerType } from './answer-type.enum';
 
 export interface Answer {
-  id: string; // UUID
+  id: number; // UUID
   text: string;
-  is_correct: boolean;
-  type: AnswerType;
-  selected?: boolean;
+  isCorrect: boolean;
+  isSelected?:boolean;
 }
