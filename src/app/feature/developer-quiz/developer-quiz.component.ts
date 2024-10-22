@@ -118,7 +118,8 @@ export class DeveloperQuizComponent {
   retryQuiz(): void {
     this.quizCompleted = false;
     this.score = 0;
-
+    this.wrongAnswers = [];
+    
     if (this.quiz) {
       this.quiz.questions?.forEach((question: Question) => {
         question.answers?.forEach((answer: Answer) => {
