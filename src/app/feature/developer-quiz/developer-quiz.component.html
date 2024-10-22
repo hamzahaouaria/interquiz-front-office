@@ -18,11 +18,22 @@
 
     <!-- Get Quiz Button -->
     <div class="mt-2"> <!-- Add margin-top for spacing -->
-      <button mat-raised-button [disabled]="loading" color="primary" (click)="getQuizByMission()" class="w-100 d-flex align-items-center justify-content-center">
-        Get Quiz
-        <mat-spinner *ngIf="loading" color="primary" diameter="20" class="ml-2"></mat-spinner>
-      </button>
-    </div>
+      
+        <button mat-raised-button [disabled]="loading" color="primary" (click)="getQuizByMission()" class="w-100 d-flex align-items-center justify-content-center">
+          <div class="d-flex justify-content-center">
+            <div class="p-2">
+              <div>Get Quiz</div>
+            </div>
+            <div class="p-2">
+              <mat-spinner *ngIf="loading" color="primary" diameter="20" class="ml-2"></mat-spinner>
+            </div>
+            
+          </div>
+          
+          
+        </button>
+      </div>
+
   </mat-card-content>
 </mat-card>
 
