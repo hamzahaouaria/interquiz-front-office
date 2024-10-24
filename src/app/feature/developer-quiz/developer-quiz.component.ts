@@ -11,10 +11,11 @@ import { Question } from 'app/models/question.model';
 import { Answer } from 'app/models/answer.model';
 import { SharedModule } from '@shared/shared.module';
 import { MatCommonModule } from '@angular/material/core';
-import { CommonModule } from '@angular/common';
+
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-developer-quiz',
@@ -27,11 +28,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatCheckboxModule,
     SharedModule,
     MatCommonModule,
-    CommonModule,
     MatFormFieldModule,
     MatInputModule,
     MatProgressSpinnerModule
-  ],
+],
   templateUrl: './developer-quiz.component.html',
   styleUrls: ['./developer-quiz.component.scss']
 })
@@ -56,10 +56,21 @@ export class DeveloperQuizComponent {
   }
 
   getQuizByMission(): void {
-    this.loading = true; 
-    this.quizService.getQuizByMission(this.missionDescription).subscribe(quiz => {
-      this.quiz = quiz;
-      this.loading = false; 
+    this.loading = true;
+    this.quizService.getQuizByMission(this.missionDescription).pipe(
+      catchError(error => {
+        console.error('Error fetching quiz:', error);
+        this.loading = false;
+        this.quizCompleted = false;
+        // Handle the error and return an empty observable
+        return of(null);
+      })
+    ).subscribe(quiz => {
+      if (quiz) {
+        this.quiz = quiz;
+        this.quizCompleted = false;
+      }
+      this.loading = false;
     });
   }
 
@@ -81,25 +92,15 @@ export class DeveloperQuizComponent {
   submitQuiz(): void {
     this.score = 0;
 
-    
-  
+
+
     this.quiz?.questions?.forEach((question: Question) => {
       if (question.type === this.answerType.SINGLE) {
         // For single-choice questions, check if the selected answer is correct
-        const selectedAnswer = question.answers?.find(answer => answer.isSelected);
-        if (selectedAnswer?.isCorrect) {
-          this.score++;
-        } else {
-          this.wrongAnswers.push(question);
-        }
+        this.evaluateSingleChoiceQuestion(question);
       } else if (question.type === this.answerType.MULTIPLE) {
         // For multiple-choice questions, check if all correct answers are selected and no incorrect ones
-        const allCorrectSelected = question.answers?.every(answer => answer.isSelected === answer.isCorrect);
-        if (allCorrectSelected) {
-          this.score++;
-        } else {
-          this.wrongAnswers.push(question);
-        }
+        this.evaluateMultipleChoiceQuestion(question);
       } else if (question.type === this.answerType.BOOLEAN) {
         // For boolean questions, check if the correct option is selected
         const selectedAnswer = question.answers?.find(answer => answer.isSelected);
@@ -110,16 +111,34 @@ export class DeveloperQuizComponent {
         }
       }
     });
-  
+
     this.quizCompleted = true;
   }
-  
+
+
+  evaluateSingleChoiceQuestion(question: Question) {
+    const selectedAnswer = question.answers?.find(answer => answer.isSelected);
+    if (selectedAnswer?.isCorrect) {
+      this.score++;
+    } else {
+      this.wrongAnswers.push(question);
+    }
+  }
+
+  evaluateMultipleChoiceQuestion(question: Question) {
+    const allCorrectSelected = question.answers?.every(answer => answer.isSelected === answer.isCorrect);
+    if (allCorrectSelected) {
+      this.score++;
+    } else {
+      this.wrongAnswers.push(question);
+    }
+  }
 
   retryQuiz(): void {
     this.quizCompleted = false;
     this.score = 0;
     this.wrongAnswers = [];
-    
+
     if (this.quiz) {
       this.quiz.questions?.forEach((question: Question) => {
         question.answers?.forEach((answer: Answer) => {

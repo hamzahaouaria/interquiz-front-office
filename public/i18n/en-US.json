@@ -1,6 +1,7 @@
 {
   "menu": {
     "dashboard": "Dashboard",
+    "quizzes": "AI Mission Quiz",
     "design": "Design",
     "design.colors": "Color System",
     "design.icons": "Material Icons",

@@ -18,21 +18,23 @@
 
     <!-- Get Quiz Button -->
     <div class="mt-2"> <!-- Add margin-top for spacing -->
-      
-        <button mat-raised-button [disabled]="loading" color="primary" (click)="getQuizByMission()" class="w-100 d-flex align-items-center justify-content-center">
-          <div class="d-flex justify-content-center">
-            <div class="p-2">
-              <div>Get Quiz</div>
-            </div>
-            <div class="p-2">
-              <mat-spinner *ngIf="loading" color="primary" diameter="20" class="ml-2"></mat-spinner>
-            </div>
-            
+
+      <button mat-raised-button [disabled]="loading" color="primary" (click)="getQuizByMission()" class="w-100 d-flex align-items-center justify-content-center">
+        <div class="d-flex justify-content-center">
+          <div class="p-2">
+            <div>Get Quiz</div>
           </div>
-          
-          
-        </button>
-      </div>
+          <div class="p-2">
+            @if (loading) {
+              <mat-spinner color="primary" diameter="20" class="ml-2"></mat-spinner>
+            }
+          </div>
+
+        </div>
+
+
+      </button>
+    </div>
 
   </mat-card-content>
 </mat-card>
@@ -47,7 +49,7 @@
 
 
 
-<ng-container *ngIf="quiz">
+@if (quiz) {
   <div class="quiz-container">
     <!-- Quiz Header -->
     <mat-card class="quiz-header">
@@ -56,101 +58,101 @@
         <mat-card-subtitle>{{ quiz?.description }}</mat-card-subtitle>
       </mat-card-header>
     </mat-card>
-
     <!-- Quiz Questions -->
-    <mat-card *ngIf="!quizCompleted">
-      <form (ngSubmit)="submitQuiz()">
-        <!-- Loop through each question in the quiz -->
-        <div *ngFor="let question of quiz?.questions" class="question-block">
-          <mat-card class="question-card">
-            <mat-card-header>
-              <mat-card-title>Question {{ question.id }}</mat-card-title>
-            </mat-card-header>
-
-            <mat-card-content>
-              <p class="question-text">{{ question.questionText }}</p>
-
-              <!-- Single choice questions -->
-              <!-- Single choice questions (Radio buttons) -->
-              <ng-container *ngIf="question.type === answerType.SINGLE">
-                <mat-radio-group (change)="onSingleAnswerSelected(question, $event.value)">
-                  <mat-radio-button *ngFor="let answer of question.answers" [value]="answer" [checked]="answer.isSelected">
-                    {{ answer.text }}
-                  </mat-radio-button>
-                </mat-radio-group>
-              </ng-container>
-
-              <!-- Multiple choice questions -->
-              <ng-container *ngIf="question.type === answerType.MULTIPLE">
-                <mat-checkbox *ngFor="let answer of question.answers" (change)="selectedAnswerEvent($event.checked, answer)" [checked]="answer.isSelected" name="answer-{{ question.id }}-{{ answer.id }}">
-                  {{ answer.text }}
-                </mat-checkbox>
-              </ng-container>
-
-            </mat-card-content>
-          </mat-card>
-        </div>
-
-        <!-- Submit Button -->
-        <div class="submit-button">
-          <button mat-raised-button color="primary" type="submit">Submit Quiz</button>
-        </div>
-      </form>
-    </mat-card>
-
+    @if (!quizCompleted) {
+      <mat-card>
+        <form (ngSubmit)="submitQuiz()">
+          <!-- Loop through each question in the quiz -->
+          @for (question of quiz?.questions; track question) {
+            <div class="question-block">
+              <mat-card class="question-card">
+                <mat-card-header>
+                  <mat-card-title>Question {{ question.id }}</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <p class="question-text">{{ question.questionText }}</p>
+                  <!-- Single choice questions -->
+                  <!-- Single choice questions (Radio buttons) -->
+                  @if (question.type === answerType.SINGLE) {
+                    <mat-radio-group (change)="onSingleAnswerSelected(question, $event.value)">
+                      @for (answer of question.answers; track answer) {
+                        <mat-radio-button [value]="answer" [checked]="answer.isSelected">
+                          {{ answer.text }}
+                        </mat-radio-button>
+                      }
+                    </mat-radio-group>
+                  }
+                  <!-- Multiple choice questions -->
+                  @if (question.type === answerType.MULTIPLE) {
+                    @for (answer of question.answers; track answer) {
+                      <mat-checkbox (change)="selectedAnswerEvent($event.checked, answer)" [checked]="answer.isSelected" name="answer-{{ question.id }}-{{ answer.id }}">
+                        {{ answer.text }}
+                      </mat-checkbox>
+                    }
+                  }
+                </mat-card-content>
+              </mat-card>
+            </div>
+          }
+          <!-- Submit Button -->
+          <div class="submit-button">
+            <button mat-raised-button color="primary" type="submit">Submit Quiz</button>
+          </div>
+        </form>
+      </mat-card>
+    }
     <!-- Quiz Results -->
-    <mat-card *ngIf="quizCompleted" class="score-card">
-      <mat-card-header>
-        <mat-card-title>Quiz Completed!</mat-card-title>
-      </mat-card-header>
-
-      <mat-card-content>
-        <p>Your Score: {{ score }} / {{ quiz?.questions?.length }}</p>
-      </mat-card-content>
-
-      <div *ngFor="let question of wrongAnswers" class="question-block">
-        <mat-card class="question-card">
-          <mat-card-header>
-            <mat-card-title>Question {{ question.id }}</mat-card-title>
-          </mat-card-header>
-
-          <mat-card-content>
-            <p class="question-text">{{ question.questionText }}</p>
-
-            <!-- Single choice questions -->
-            <!-- Single choice questions (Radio buttons) -->
-            <ng-container *ngIf="question.type === answerType.SINGLE">
-              <mat-radio-group >
-                <mat-radio-button [class.text-success]="answer.isCorrect" [class.text-danger]="!answer.isCorrect" *ngFor="let answer of question.answers" [value]="answer" [checked]="answer.isSelected">
-                  {{ answer.text }}
-                </mat-radio-button>
-              </mat-radio-group>
-
-            </ng-container>
-
-            <!-- Multiple choice questions -->
-            <ng-container *ngIf="question.type === answerType.MULTIPLE">
-              <mat-checkbox [class.text-success]="answer.isCorrect" [class.text-danger]="!answer.isCorrect" *ngFor="let answer of question.answers" [checked]="answer.isSelected" name="answer-{{ question.id }}-{{ answer.id }}">
-                {{ answer.text }}
-              </mat-checkbox>
-            </ng-container>
-
-            <mat-card class="explanation-card">
+    @if (quizCompleted) {
+      <mat-card class="score-card">
+        <mat-card-header>
+          <mat-card-title>Quiz Completed!</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Your Score: {{ score }} / {{ quiz?.questions?.length }}</p>
+        </mat-card-content>
+        @for (question of wrongAnswers; track question) {
+          <div class="question-block">
+            <mat-card class="question-card">
               <mat-card-header>
-                <mat-card-title>Explanation</mat-card-title>
+                <mat-card-title>Question {{ question.id }}</mat-card-title>
               </mat-card-header>
               <mat-card-content>
-                <p>{{ question.explanation }}</p>
+                <p class="question-text">{{ question.questionText }}</p>
+                <!-- Single choice questions -->
+                <!-- Single choice questions (Radio buttons) -->
+                @if (question.type === answerType.SINGLE) {
+                  <mat-radio-group >
+                    @for (answer of question.answers; track answer) {
+                      <mat-radio-button [class.text-success]="answer.isCorrect" [class.text-danger]="!answer.isCorrect" [value]="answer" [checked]="answer.isSelected">
+                        {{ answer.text }}
+                      </mat-radio-button>
+                    }
+                  </mat-radio-group>
+                }
+                <!-- Multiple choice questions -->
+                @if (question.type === answerType.MULTIPLE) {
+                  @for (answer of question.answers; track answer) {
+                    <mat-checkbox [class.text-success]="answer.isCorrect" [class.text-danger]="!answer.isCorrect" [checked]="answer.isSelected" name="answer-{{ question.id }}-{{ answer.id }}">
+                      {{ answer.text }}
+                    </mat-checkbox>
+                  }
+                }
+                <mat-card class="explanation-card">
+                  <mat-card-header>
+                    <mat-card-title>Explanation</mat-card-title>
+                  </mat-card-header>
+                  <mat-card-content>
+                    <p>{{ question.explanation }}</p>
+                  </mat-card-content>
+                </mat-card>
               </mat-card-content>
             </mat-card>
-
-          </mat-card-content>
-        </mat-card>
-      </div>
-
-      <mat-card-actions>
-        <button mat-raised-button color="accent" (click)="retryQuiz()">Retry</button>
-      </mat-card-actions>
-    </mat-card>
+          </div>
+        }
+        <mat-card-actions>
+          <button mat-raised-button color="accent" (click)="retryQuiz()">Retry</button>
+        </mat-card-actions>
+      </mat-card>
+    }
   </div>
-</ng-container>
+}
