@@ -97,6 +97,24 @@ describe('DeveloperQuizComponent', () => {
     expect(component.score).toBe(0);
   });
 
+  // when isSelected is not set for multichoice
+  it('when isSelected is not set for multichoice', () => {
+    let question:Question = {
+      id: 1,
+      questionText: 'What is the capital of France?',
+      type:AnswerType.MULTIPLE,
+      answers: [
+        { id: 1, text: 'Paris', isCorrect: true , isSelected: true},
+        { id: 2, text: 'London', isCorrect: true , isSelected: true },
+        { id: 3, text: 'Berlin', isCorrect: false },
+        { id: 4, text: 'Madrid', isCorrect: false }
+      ]
+    }
+    component.evaluateMultipleChoiceQuestion(question);
+    expect(component.wrongAnswers.length).toBe(0);
+    expect(component.score).toBe(1);
+  });
+
 
 
 

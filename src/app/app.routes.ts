@@ -9,6 +9,7 @@ import { Error500Component } from './routes/sessions/500.component';
 import { LoginComponent } from './routes/sessions/login/login.component';
 import { RegisterComponent } from './routes/sessions/register/register.component';
 import { DeveloperQuizComponent } from './feature/developer-quiz/developer-quiz.component';
+import { MissionNavigatorComponent } from './feature/mission-navigator/mission-navigator.component';
 
 export const routes: Routes = [
   {
@@ -20,6 +21,7 @@ export const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent },
       { path: 'quizzes', component: DeveloperQuizComponent },
+      { path: 'mission-navigator', component: MissionNavigatorComponent },
       { path: '403', component: Error403Component },
       { path: '404', component: Error404Component },
       { path: '500', component: Error500Component },
