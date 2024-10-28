@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SharedModule } from '@shared/shared.module';
 import { Mission } from 'app/models/mission.model';
+import { MissionService } from 'app/services/mission.service';
 
 @Component({
   selector: 'app-mission-navigator',
@@ -17,7 +18,7 @@ export class MissionNavigatorComponent {
 
   loading: boolean = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,private missionService: MissionService) {
     this.missionForm = this.fb.group({
       missionDescription: ['', Validators.required]
     });
@@ -30,8 +31,16 @@ export class MissionNavigatorComponent {
 
   submitMission(mission:Mission): void {
     this.loading = true;
-    // Submit the mission
-    this.loading = false;
+    this.missionService.sendMission(mission).subscribe(
+      (mission: Mission) => {
+        this.mission = mission;
+        this.loading = false;
+      },
+      (error) => {
+        console.error('Error sending mission:', error);
+        this.loading = false;
+      }
+    );
   }
 
 }

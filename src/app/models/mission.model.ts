@@ -8,6 +8,9 @@ export class Mission {
   description: string;
   language: Language;
   quizzes: Quiz[];
+  level1: string;
+  level2: string;
+  level3: string;
 
   constructor() {
     this.id = 0;
@@ -15,5 +18,8 @@ export class Mission {
     this.description = '';
     this.language = new Language();
     this.quizzes = [];
+    this.level1 = '';
+    this.level2 = '';
+    this.level3 = '';
   }
 }
