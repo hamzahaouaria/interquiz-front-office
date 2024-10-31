@@ -7,6 +7,11 @@ import { MatRadioButton, MatRadioModule } from '@angular/material/radio';
 import { MatProgressSpinnerModule, MatSpinner } from '@angular/material/progress-spinner';
 import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatTableModule  } from '@angular/material/table';
+import { MtxGridModule } from '@ng-matero/extensions/grid';
+import { MtxButtonModule } from '@ng-matero/extensions/button';
+import { NgApexchartsModule } from 'ng-apexcharts';
+
 
 
 
@@ -23,6 +28,10 @@ import { MatInputModule } from '@angular/material/input';
     MatProgressSpinnerModule,
     CommonModule,
     FormsModule,
+    MatTableModule,
+    MtxGridModule,
+    MtxButtonModule,
+    NgApexchartsModule
 
   ],
   exports: [
@@ -35,6 +44,10 @@ import { MatInputModule } from '@angular/material/input';
     MatProgressSpinnerModule,
     CommonModule,
     FormsModule,
+    MatTableModule,
+    MtxGridModule,
+    MtxButtonModule,
+    NgApexchartsModule
   ]
 })
 export class SharedModule { }

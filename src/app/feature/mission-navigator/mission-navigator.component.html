@@ -138,27 +138,50 @@
         <mat-icon>list</mat-icon>
       </mat-card-header>
       <mat-card-content>
-        @for (doc of sortedDocFiles(); track $index) {
-          <div class="d-flex justify-content-between border rounded p-2 mb-2">
-            <div>{{ doc.name | slice:0:20}}</div>
-            <div>{{ doc.path | slice:0:20}}</div>
-            <div>{{ doc.type | slice:0:20}}</div>
+        <mtx-grid [data]="sortedDocFiles()"
+              [columns]="columns"
+              [loading]="loadingSeachDocs"
+              [cellTemplate]="{
+                content: contentTpl,
+                 accuracy: accuracyTpl,
+                 actions:actionsTpl,
+                 name:nameTpl,
+                 matchedWords: macthedTpl
 
-            <div>{{ doc.content | slice:0:50}}</div>
-            <div>{{ doc.accuracy | number:'1.2-2' }}%</div>
-            <div>{{ doc.matchedWords }}</div>
-            <div>
-              <button
-          mat-raised-button
-          color="primary"
-          (click)="removeDocFile(doc)"
-          class="btn btn-primary"
-              >
-          <mat-icon>delete</mat-icon>
-              </button>
-            </div>
+                 }">
+        </mtx-grid>
+
+        <ng-template #contentTpl let-row let-index="index" let-col="colDef">
+          <div>{{row.content | slice:0:40 }}</div>
+        </ng-template>
+
+        <ng-template #macthedTpl let-row let-index="index" let-col="colDef">
+          <div>{{row.matchedWords | slice:0:5 }}</div>
+        </ng-template>
+
+        <ng-template #nameTpl let-row let-index="index" let-col="colDef">
+          <div>{{row.name | slice:0:20 }}</div>
+        </ng-template>
+
+        <ng-template #accuracyTpl let-row let-index="index" let-col="colDef">
+          <div class="btn btn-accent" color="primary">{{row.accuracy | number:'1.2-2'}}%</div>
+            <div style="max-width: 17rem;">
+            <apx-chart
+            [series]="[row.accuracy, 100 - row.accuracy]"
+            [labels]="chartOptions.labels"
+            [chart]="chartOptions.chart"
+            [responsive]="chartOptions.responsive"
+            [colors]="['#4CAF50', '#ffffff']"
+          ></apx-chart>
           </div>
-        }
+
+        </ng-template>
+
+        <ng-template #actionsTpl let-row let-index="index" let-col="colDef">
+          <button class="btn btn-danger" (click)="removeDocFile(row)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </ng-template>
       </mat-card-content>
     </mat-card>
   </mat-card-content>

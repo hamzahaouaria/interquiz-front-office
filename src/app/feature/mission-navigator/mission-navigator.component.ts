@@ -1,23 +1,32 @@
 import { HttpEventType } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MtxPipesModule } from '@ng-matero/extensions/core';
+import { MtxDialog } from '@ng-matero/extensions/dialog';
+import { MtxGridColumn } from '@ng-matero/extensions/grid';
 import { SharedModule } from '@shared/shared.module';
 import { DocFile } from 'app/models/doc-file.model';
 import { Mission } from 'app/models/mission.model';
 import { DocFileServiceService } from 'app/services/doc-file-service.service';
 import { MissionService } from 'app/services/mission.service';
+import { ApexChart, ApexNonAxisChartSeries, ApexResponsive, ChartComponent } from 'ng-apexcharts';
+
+export type ChartOptions = {
+  series: ApexNonAxisChartSeries;
+  chart: ApexChart;
+  responsive: ApexResponsive[];
+  labels: any;
+};
 
 @Component({
   selector: 'app-mission-navigator',
   standalone: true,
-  imports: [SharedModule, MatIconModule,MtxPipesModule],
+  imports: [SharedModule, MatIconModule, MtxPipesModule],
   templateUrl: './mission-navigator.component.html',
   styleUrl: './mission-navigator.component.scss',
 })
 export class MissionNavigatorComponent {
-
   mission: Mission = new Mission();
   missionForm: FormGroup;
   selectedFile: File | null = null;
@@ -28,15 +37,54 @@ export class MissionNavigatorComponent {
   loading: boolean = false;
   loadingSeachDocs: boolean = false;
 
+  columns: MtxGridColumn[] = [
+    { header: 'File Name', field: 'name', sortable: true },
+    { header: 'File content', field: 'content', sortable: true },
+    //{ header: 'File path', field: 'path', sortable: true },
+    { header: 'Accuracy', field: 'accuracy', sortable: true },
+    { header: 'Matched Words', field: 'matchedWords', sortable: true },
+    {
+      header: 'Actions',
+      field: 'actions',
+      sortable: false,
+    },
+  ];
+
+  public chartOptions: Partial<ChartOptions>;
+
+
+
   constructor(
     private fb: FormBuilder,
     private missionService: MissionService,
-    private docFileService: DocFileServiceService
+    private docFileService: DocFileServiceService,
+    private mtxDialog: MtxDialog
   ) {
     this.missionForm = this.fb.group({
       missionDescription: ['', Validators.required],
     });
     this.mission.description = 'JMeter,postman';
+
+    this.chartOptions = {
+      series: [44, 55, 13, 43, 22],
+      chart: {
+        type: "donut"
+      },
+      labels: ["Accuracy", "Not Accurate"],
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200
+            },
+            legend: {
+              position: "bottom"
+            }
+          }
+        }
+      ]
+    };
   }
 
   ngOnInit(): void {
@@ -58,15 +106,15 @@ export class MissionNavigatorComponent {
   }
 
   loadDocFiles(): void {
-    this.loading = true;
+    this.loadingSeachDocs = true;
     this.docFileService.getAll().subscribe({
       next: (docFiles: DocFile[]) => {
         this.docFiles = docFiles;
-        this.loading = false;
+        this.loadingSeachDocs = false;
       },
       error: error => {
         console.error('Error loading doc files:', error);
-        this.loading = false;
+        this.loadingSeachDocs = false;
       },
     });
   }
@@ -95,13 +143,13 @@ export class MissionNavigatorComponent {
 
     const formData = new FormData();
     formData.append('file', this.selectedFile);
-    this.docFileService.uploadFile(formData).subscribe(
-      event => {
+    this.docFileService.uploadFile(formData).subscribe(event => {
       if (event.type === HttpEventType.UploadProgress && event.total) {
         this.uploadProgress = Math.round((100 * event.loaded) / event.total);
       } else if (event.type === HttpEventType.Response) {
         this.uploadProgress = 0;
-        this.loadDocFiles()
+        this.alert("upload success");
+        this.loadDocFiles();
       }
     });
   }
@@ -112,7 +160,7 @@ export class MissionNavigatorComponent {
       next: (docFiles: DocFile[]) => {
         this.docFiles = docFiles;
         this.loadingSeachDocs = false;
-        this.loadDocFiles()
+        this.loadDocFiles();
       },
       error: error => {
         console.error('Error setting accuracy for docs:', error);
@@ -123,5 +171,11 @@ export class MissionNavigatorComponent {
 
   sortedDocFiles(): DocFile[] {
     return this.docFiles.sort((a, b) => b.accuracy - a.accuracy);
+  }
+
+  alert(msg: string) {
+    this.mtxDialog.alert(msg, '', () => {
+      console.log('Alert closed');
+    });
   }
 }
