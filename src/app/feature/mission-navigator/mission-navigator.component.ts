@@ -101,7 +101,7 @@ export class MissionNavigatorComponent {
         this.uploadProgress = Math.round((100 * event.loaded) / event.total);
       } else if (event.type === HttpEventType.Response) {
         this.uploadProgress = 0;
-        this.loadDocFiles
+        this.loadDocFiles()
       }
     });
   }
@@ -112,7 +112,7 @@ export class MissionNavigatorComponent {
       next: (docFiles: DocFile[]) => {
         this.docFiles = docFiles;
         this.loadingSeachDocs = false;
-        this.loadDocFiles
+        this.loadDocFiles()
       },
       error: error => {
         console.error('Error setting accuracy for docs:', error);
