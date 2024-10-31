@@ -6,7 +6,8 @@
 
   <mat-card-content class="d-flex flex-column">
     <!-- Mission Input Field -->
-    <mat-form-field appearance="fill" class="flex-grow-1"> <!-- Allow it to grow -->
+    <mat-form-field appearance="fill" class="flex-grow-1">
+      <!-- Allow it to grow -->
       <mat-label>Enter mission description</mat-label>
       <textarea
         matInput
@@ -17,7 +18,8 @@
     </mat-form-field>
 
     <!-- Mission Level 1 Input Field -->
-    <mat-form-field appearance="fill" class="flex-grow-1"> <!-- Allow it to grow -->
+    <mat-form-field appearance="fill" class="flex-grow-1">
+      <!-- Allow it to grow -->
       <mat-label>Enter mission level 1</mat-label>
       <input
         matInput
@@ -28,7 +30,8 @@
     </mat-form-field>
 
     <!-- Mission Level 2 Input Field -->
-    <mat-form-field appearance="fill" class="flex-grow-1"> <!-- Allow it to grow -->
+    <mat-form-field appearance="fill" class="flex-grow-1">
+      <!-- Allow it to grow -->
       <mat-label>Enter mission level 2</mat-label>
       <input
         matInput
@@ -39,7 +42,8 @@
     </mat-form-field>
 
     <!-- Mission Level 3 Input Field -->
-    <mat-form-field appearance="fill" class="flex-grow-1"> <!-- Allow it to grow -->
+    <mat-form-field appearance="fill" class="flex-grow-1">
+      <!-- Allow it to grow -->
       <mat-label>Enter mission level 3</mat-label>
       <input
         matInput
@@ -49,26 +53,113 @@
       />
     </mat-form-field>
 
-
     <!-- Get Quiz Button -->
-    <div class="mt-2"> <!-- Add margin-top for spacing -->
+    <div class="mt-2 d-flex justify-content-center gap-30">
+      <!-- Add margin-top for spacing -->
 
-      <button mat-raised-button [disabled]="loading" color="primary" (click)="submitMission(mission)" class="w-100 d-flex align-items-center justify-content-center">
+      <button
+        mat-raised-button
+        [disabled]="loading"
+        color="primary"
+        (click)="submitMission(mission)"
+        class="btn btn-primary d-flex align-items-center justify-content-center"
+      >
         <div class="d-flex justify-content-center">
           <div class="p-2">
-            <div>Get Quiz</div>
+            <div>Generate scope tags</div>
           </div>
           <div class="p-2">
             @if (loading) {
               <mat-spinner color="primary" diameter="20" class="ml-2"></mat-spinner>
             }
           </div>
-
         </div>
+      </button>
 
-
+      <button
+        mat-raised-button
+        [disabled]="loadingSeachDocs"
+        color="primary"
+        (click)="setAccuracyForDocs(mission)"
+        class="btn btn-primary d-flex align-items-center justify-content-center"
+      >
+        <div class="d-flex justify-content-center">
+          <div class="p-2">
+            <div>Search documents</div>
+          </div>
+          <div class="p-2">
+            @if (loadingSeachDocs) {
+              <mat-spinner color="primary" diameter="20" class="ml-2"></mat-spinner>
+            }
+          </div>
+        </div>
       </button>
     </div>
+  </mat-card-content>
+</mat-card>
 
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>mission finder</mat-card-title>
+    <mat-card-subtitle>Upload mission files</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-card class="doc-list-card">
+      <mat-card-header>
+        <mat-card-title>Document List</mat-card-title>
+        <mat-card-subtitle>
+          <div class="d-flex">
+            <button
+              mat-icon-button
+              color="primary"
+              (click)="fileInput.click()"
+              class="btn btn-primary"
+            >
+              <input
+                type="file"
+                #fileInput
+                style="display: none"
+                (change)="onFileSelected($event)"
+              />
+              <div>{{selectedFile?.name | slice:0:15 }}</div>
+              <mat-icon>upload</mat-icon>
+            </button>
+
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="onUpload()"
+              class="btn btn-primary"
+            > Start uploading {{ uploadProgress }}%
+              <mat-icon>start</mat-icon>
+            </button>
+          </div>
+        </mat-card-subtitle>
+        <mat-icon>list</mat-icon>
+      </mat-card-header>
+      <mat-card-content>
+        @for (doc of sortedDocFiles(); track $index) {
+          <div class="d-flex justify-content-between border rounded p-2 mb-2">
+            <div>{{ doc.name | slice:0:20}}</div>
+            <div>{{ doc.path | slice:0:20}}</div>
+            <div>{{ doc.type | slice:0:20}}</div>
+
+            <div>{{ doc.content | slice:0:50}}</div>
+            <div>{{ doc.accuracy | number:'1.2-2' }}%</div>
+            <div>{{ doc.matchedWords }}</div>
+            <div>
+              <button
+          mat-raised-button
+          color="primary"
+          (click)="removeDocFile(doc)"
+          class="btn btn-primary"
+              >
+          <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
   </mat-card-content>
 </mat-card>
