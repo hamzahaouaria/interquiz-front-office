@@ -1,3 +1,5 @@
+import { Mission } from "./mission.model";
+
 export class DocFile {
   id: string;
   name: string;
@@ -7,6 +9,7 @@ export class DocFile {
   resume: string;
   accuracy: number = 0;
   matchedWords: string[] = [];
+  idealMission:Mission = new Mission();
 
   constructor(
     id: string,
@@ -16,7 +19,8 @@ export class DocFile {
     type: string,
     resume: string,
     accuracy: number,
-    matchedWords: string[]
+    matchedWords: string[],
+    idealMission:Mission
   ) {
     this.id = id;
     this.name = name;
@@ -26,5 +30,6 @@ export class DocFile {
     this.resume = resume;
     this.accuracy = accuracy;
     this.matchedWords = matchedWords;
+    this.idealMission = idealMission;
   }
 }

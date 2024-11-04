@@ -39,7 +39,7 @@ export class MissionNavigatorComponent {
 
   columns: MtxGridColumn[] = [
     { header: 'File Name', field: 'name', sortable: true },
-    { header: 'File content', field: 'content', sortable: true },
+    { header: 'Skills and tools', field: 'content', sortable: true },
     //{ header: 'File path', field: 'path', sortable: true },
     { header: 'Accuracy', field: 'accuracy', sortable: true },
     { header: 'Matched Words', field: 'matchedWords', sortable: true },

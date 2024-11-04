@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MtxPipesModule } from '@ng-matero/extensions/core';
 import { MtxDialog } from '@ng-matero/extensions/dialog';
 import { MtxGridColumn } from '@ng-matero/extensions/grid';
+import { SubtagsPipe } from '@shared/pipes/subtags.pipe';
 import { SharedModule } from '@shared/shared.module';
 import { DocFile } from 'app/models/doc-file.model';
 import { Mission } from 'app/models/mission.model';
@@ -21,7 +22,7 @@ export type ChartOptions = {
 @Component({
   selector: 'app-best-match-resource',
   standalone: true,
-  imports: [SharedModule, MatIconModule, MtxPipesModule],
+  imports: [SharedModule, MatIconModule, MtxPipesModule,SubtagsPipe],
   templateUrl: './best-match-resource.component.html',
   styleUrl: './best-match-resource.component.scss'
 })
@@ -33,8 +34,8 @@ export class BestMatchResourceComponent {
   public chartOptions: Partial<ChartOptions>;
 
   columns: MtxGridColumn[] = [
-    { header: 'File Name', field: 'name', sortable: true },
-    { header: 'File content', field: 'content', sortable: true },
+    { header: 'Key Job titles', field: 'name', sortable: true },
+    { header: 'Key skills', field: 'content', sortable: true },
     //{ header: 'File path', field: 'path', sortable: true },
     { header: 'Accuracy', field: 'accuracy', sortable: true },
     { header: 'Matched Words', field: 'matchedWords', sortable: true },
@@ -161,6 +162,34 @@ export class BestMatchResourceComponent {
         this.loadingSeachDocs = false;
       },
     });
+  }
+
+  downloadFile(doc: DocFile) {
+    this.docFileService.downloadFile(doc);
+  }
+
+
+  getFirstElements(content:string,n:number):string[]{
+    if (!content) {
+      return [];
+    }
+    let subtags = content.split(',');
+    let result = [];
+    for (let i = 0; i < Math.min(n,subtags.length); i++) {
+      result.push(subtags[i]);
+    }
+    return result
+  }
+
+  getFirst(content:string[],n:number):string[]{
+    if (!content) {
+      return [];
+    }
+    let result = [];
+    for (let i = 0; i < Math.min(n,content.length); i++) {
+      result.push(content[i]);
+    }
+    return result
   }
 
 }

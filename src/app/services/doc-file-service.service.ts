@@ -41,4 +41,19 @@ export class DocFileServiceService {
   setAccuracyForDocs(misson: Mission) {
     return this.http.post<DocFile[]>(`${this.apiUrl}/set-accuracy-all`, misson);
   }
+
+  downloadFile(doc: DocFile) {
+    let fileName = doc.path.split('/').pop();
+    if (!fileName) {
+      fileName = 'atos_resume_ai_search_resource.pdf';
+    }
+    this.http.get(`${this.apiUrl}/download/${doc.id}`, { responseType: 'blob' }).subscribe(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName; // Set the filename here
+      a.click();
+      window.URL.revokeObjectURL(url); // Clean up URL object after download
+    });
+  }
 }
