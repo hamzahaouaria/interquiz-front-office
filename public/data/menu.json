@@ -23,6 +23,12 @@
       "icon": "question_answer"
     },
     {
+      "route": "best-match-resource",
+      "name": "best-match-resource",
+      "type": "link",
+      "icon": "star"
+    },
+    {
       "route": "/",
       "name": "sessions",
       "type": "sub",

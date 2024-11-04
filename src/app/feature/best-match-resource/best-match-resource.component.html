@@ -1,0 +1,157 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center my-3">
+
+      <mat-card class="w-100">
+        <mat-card-header>
+          <mat-card-title>Search resource with AI</mat-card-title>
+
+        </mat-card-header>
+        <mat-card-content>
+            <div class="d-flex justify-content-between align-items-center my-3">
+              <div class="col-9">
+                <input type="text" class="form-control py-2 h-100" placeholder="Search..." [(ngModel)]="searchContent">
+              </div>
+              <div class="col-3">
+                <button class="btn btn-primary  d-flex align-items-center justify-content-center gap-3" (click)="onSearchClick()">
+                <div>Search</div>
+                <mat-icon class="ml-2">search</mat-icon>
+                </button>
+            </div>
+            </div>
+        </mat-card-content>
+      </mat-card>
+      </div>
+    </div>
+  </div>
+  <div class="row" style="min-height: 20rem;">
+
+    <div class="col-md-12">
+      <mat-card class="my-3">
+        <mat-card-header>
+          <mat-card-title>Tags</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="tags">
+            <span class="badge badge-primary">Tag 1</span>
+            <span class="badge badge-secondary">Tag 2</span>
+            <span class="badge badge-success">Tag 3</span>
+          </div>
+        <mat-card class="my-3 ">
+          <mat-card-header>
+            <mat-card-title>Mission Details</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div><strong>Search Subject:</strong> {{ mission.description }}</div>
+            <div><strong>Job Titles:</strong> {{ mission.jobTitles }}</div>
+            <div><strong>Tech Tools:</strong> {{ mission.techTools }}</div>
+            <div><strong>Methodologies:</strong> {{ mission.methodologies }}</div>
+            <div><strong>Field of Studies:</strong> {{ mission.fieldOfStudies }}</div>
+            <div><strong>Skills:</strong> {{ mission.skills }}</div>
+            <div><strong>Certifications:</strong> {{ mission.certifications }}</div>
+            <div><strong>Industries:</strong> {{ mission.industries }}</div>
+            <div><strong>Specific Tools:</strong> {{ mission.specificTools }}</div>
+            <div><strong>Related Docs:</strong> {{ mission.relatedDocs.length }}</div>
+          </mat-card-content>
+        </mat-card>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex flex-column">
+        <h3>Search Results</h3>
+        <mat-card-content>
+          <mtx-grid [data]="sortedDocFiles()"
+                [columns]="columns"
+                [loading]="searching"
+                [cellTemplate]="{
+                  content: contentTpl,
+                   accuracy: accuracyTpl,
+                   actions:actionsTpl,
+                   name:nameTpl,
+                   matchedWords: macthedTpl
+
+                   }">
+          </mtx-grid>
+
+          <ng-template #contentTpl let-row let-index="index" let-col="colDef">
+            <div>{{row.content | slice:0:40 }}</div>
+          </ng-template>
+
+          <ng-template #macthedTpl let-row let-index="index" let-col="colDef">
+            <div>{{row.matchedWords | slice:0:5 }}</div>
+          </ng-template>
+
+          <ng-template #nameTpl let-row let-index="index" let-col="colDef">
+            <div>{{row.name | slice:0:20 }}</div>
+          </ng-template>
+
+          <ng-template #accuracyTpl let-row let-index="index" let-col="colDef">
+            <div class="btn btn-accent" color="primary">{{row.accuracy | number:'1.2-2'}}%</div>
+              <div style="max-width: 17rem;">
+              <apx-chart
+              [series]="[row.accuracy, 100 - row.accuracy]"
+              [labels]="chartOptions.labels"
+              [chart]="chartOptions.chart"
+              [responsive]="chartOptions.responsive"
+              [colors]="['#4CAF50', '#ffffff']"
+            ></apx-chart>
+            </div>
+
+          </ng-template>
+
+          <ng-template #actionsTpl let-row let-index="index" let-col="colDef">
+            <button class="btn btn-danger" (click)="removeDocFile(row)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </ng-template>
+        </mat-card-content>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="upload-container">
+        <mat-card class="my-3 h-80">
+          <mat-card-header>
+            <mat-card-title>Upload File</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+              <div class="d-flex w-100 gap-3">
+                <div class="w-50 pr-2">
+                <button
+                  mat-icon-button
+                  color="primary"
+                  (click)="fileInput.click()"
+                  class="btn btn-success w-100"
+                >
+                  <input
+                  type="file"
+                  #fileInput
+                  style="display: none"
+                  (change)="onFileSelected($event)"
+                  />
+                  <div>{{selectedFile?.name | slice:0:15 }}</div>
+                  <mat-icon>upload</mat-icon>
+                </button>
+                </div>
+                <div class="w-50 pl-2">
+                  <button
+                  *ngIf="selectedFile"
+                  mat-raised-button
+                  color="primary"
+                  (click)="onUpload()"
+                  class="btn btn-info w-100 text-white"
+                  >
+                  Start uploading {{ uploadProgress }}%
+                  <mat-icon>start</mat-icon>
+                  </button>
+                </div>
+              </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

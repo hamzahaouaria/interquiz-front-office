@@ -25,6 +25,11 @@ export class DocFileServiceService {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
+  searchByMisson(mission: Mission) {
+    return this.http.post<Mission>(`${this.apiUrl}/search-resource-by-mission`, mission);
+  }
+
+
   uploadFile(formData: FormData) {
     return this.http
       .post(`${this.apiUrl}/upload`, formData, {
