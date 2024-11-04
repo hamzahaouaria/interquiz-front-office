@@ -27,6 +27,7 @@ export type ChartOptions = {
   styleUrl: './best-match-resource.component.scss'
 })
 export class BestMatchResourceComponent {
+
   selectedFile: File | null = null;
   uploadProgress: number = 0;
   docFiles: DocFile[] = [];
@@ -48,6 +49,7 @@ export class BestMatchResourceComponent {
 
   searchContent: string = '';
   searching: boolean = false;
+  maxAccuracy: number = 1;
 
 
   constructor(
@@ -94,6 +96,8 @@ export class BestMatchResourceComponent {
         this.mission = mission;
         this.docFiles = mission.relatedDocs;
         this.searching = false;
+        this.maxAccuracy = Math.max(...this.docFiles.map(d => d.accuracy));
+        //this.alert(this.maxAccuracy.toString());
       },
       error: error => {
         this.alert('Error searching doc files');
@@ -191,5 +195,11 @@ export class BestMatchResourceComponent {
     }
     return result
   }
+
+  askAi(doc: DocFile) {
+    throw new Error('Method not implemented.');
+  }
+
+
 
 }
