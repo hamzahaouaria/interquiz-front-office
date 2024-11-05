@@ -191,7 +191,7 @@ export class BestMatchResourceComponent {
     }
     let result = [];
     for (let i = 0; i < Math.min(n,content.length); i++) {
-      result.push(content[i]);
+      result.push(content[i].trim().replaceAll('undefined ','_'));
     }
     return result
   }

@@ -2,6 +2,16 @@
   max-width: 20rem;
 }
 
+.hide-overflow{
+  overflow: hidden;
+}
+.hide-overflow-mx{
+  overflow: hidden;
+  max-width: 10rem;
+  max-height: 3rem;
+}
+
+
 .min-with-20{
   min-width: 15rem;
   max-width: 20rem;

@@ -22,6 +22,10 @@ export class Mission {
   industries: string;
   specificTools: string;
   relatedDocs: DocFile[];
+  yearsOfExperience: string;
+  companiesAndClient: string;
+  locations: string;
+
 
   constructor() {
     this.id = 0;
@@ -41,6 +45,9 @@ export class Mission {
     this.industries = '';
     this.specificTools = '';
     this.relatedDocs = [];
+    this.yearsOfExperience = '';
+    this.companiesAndClient = '';
+    this.locations = '';
 
 
   }

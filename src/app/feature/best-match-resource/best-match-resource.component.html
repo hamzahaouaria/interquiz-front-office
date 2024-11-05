@@ -98,13 +98,14 @@
             </mtx-grid>
 
             <ng-template #contentTpl let-row let-index="index" let-col="colDef">
-              <div style="max-width: 100%;" class="d-flex flex-wrap gap-1">
-                @for (item of getFirstElements(row?.idealMission.specificTools,3); track $index) {
+              <div style="max-width: 15rem" class="d-flex flex-wrap gap-1">
+                @for (item of getFirstElements(row?.idealMission.specificTools,8); track $index) {
                   <div class="badge rounded-pill bg-primary">{{item}}</div>
                 }
-                @for (item of getFirstElements(row?.idealMission.skills,3); track $index) {
+                @for (item of getFirstElements(row?.idealMission.skills,8); track $index) {
                   <div class="badge rounded-pill bg-primary ">{{item}}</div>
                 }
+
 
 
               </div>
@@ -112,10 +113,10 @@
 
             </ng-template>
 
-            <ng-template #macthedTpl let-row let-index="index" let-col="colDef">
-              <div style="max-width: 20%;min-width: 20rem;font-size: medium ;">
+            <ng-template #macthedTpl let-row let-index="index" let-col="colDef" style="min-height: 20rem;" class="d-flex  align-items-center">
+              <div style="max-width: 15rem;min-height:9rem;font-size: medium ;" class="d-flex  align-items-center">
                 @if (row.accuracy>0) {
-                  <div>{{row.accuracy | number:'1.0'}}: {{getFirst(row.matchedWords,9) }}</div>
+                  <div>{{row.matchedWords.length | number:'1.0'}}: {{getFirst(row.matchedWords,9) }}</div>
                 }
 
               </div>
@@ -124,9 +125,26 @@
 
             <ng-template #nameTpl let-row let-index="index" let-col="colDef">
               <div class="row mw-20 doc-fields d-flex flex-wrap gap-1" >
-                <div class="badge rounded-pill bg-dark">{{row?.idealMission?.jobTitles | subtags:1 }}</div>
-                <div class="badge rounded-pill bg-primary"> {{row?.idealMission?.fieldOfStudies | subtags:1 }}</div>
-                <div class="badge rounded-pill bg-success">{{row?.idealMission?.skills | subtags:1 }}</div>
+                <ul class="list-group">
+                  <li class="list-group-item d-flex align-items-center gap-1 " style="min-width: 15rem;">
+                    <mat-icon [ngStyle]="{'color': '#345eff'}" class="me-1">supervisor_account</mat-icon>
+                    <div class="hide-overflow-mx">{{row?.idealMission?.jobTitles | subtags:1 }}</div>
+                  </li>
+                  <li class="list-group-item d-flex align-items-center">
+                    <mat-icon [ngStyle]="{'color': '#439dd3'}" class="me-1">work</mat-icon>
+                    <div>{{row?.idealMission?.skills | subtags:1 }}</div>
+                  </li>
+                  <li class="list-group-item d-flex align-items-center">
+                    <mat-icon [ngStyle]="{'color': '#009fff'}" class="me-1">location_on</mat-icon>
+                    <div>{{row?.idealMission?.yearsOfExperience | subtags:1 }}Exp, {{row?.idealMission?.locations | subtags:1 }}</div>
+                  </li>
+                  <li class="list-group-item d-flex align-items-center hide-overflow">
+                    <mat-icon [ngStyle]="{'color': '#0087ff' }" class="me-1">location_city</mat-icon>
+                    <div class="hide-overflow-mx">{{row?.idealMission?.companiesAndClient | subtags:2 | slice:0:38}}</div>
+                  </li>
+                </ul>
+
+
               </div>
 
 
@@ -151,14 +169,14 @@
 
             <ng-template #actionsTpl let-row let-index="index" let-col="colDef">
               <div class="">
-                <div class="btn-group mr-2" role="group" aria-label="Second group">
-                  <button type="button" class="btn btn-primary btn-sm d-flex align-items-center justify-content-center" (click)="askAi(row)">
+                <div class="btn-group-vertical mr-2" role="group" aria-label="Second group">
+                  <button type="button" class="btn btn-outline-primary btn-sm d-flex align-items-center justify-content-center" (click)="askAi(row)">
                     <mat-icon>chat</mat-icon>
                   </button>
-                  <button type="button" class="btn btn-success btn-sm d-flex align-items-center justify-content-center" (click)="downloadFile(row)">
+                  <button type="button" class="btn btn-outline-success btn-sm d-flex align-items-center justify-content-center" (click)="downloadFile(row)">
                     <mat-icon>download</mat-icon>
                   </button>
-                  <button type="button" class="btn btn-danger btn-sm d-flex align-items-center justify-content-center" (click)="removeDocFile(row)">
+                  <button type="button" class="btn btn-outline-danger btn-sm d-flex align-items-center justify-content-center" (click)="removeDocFile(row)">
                     <mat-icon>delete</mat-icon>
                   </button>
                 </div>
