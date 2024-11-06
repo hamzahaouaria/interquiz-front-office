@@ -1,29 +1,53 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
+import { MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardModule, MatCardTitle } from '@angular/material/card';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { MatRadioButton, MatRadioModule } from '@angular/material/radio';
+import { MatProgressSpinnerModule, MatSpinner } from '@angular/material/progress-spinner';
+import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatListModule } from '@angular/material/list';
+import { MatTableModule  } from '@angular/material/table';
+import { MtxGridModule } from '@ng-matero/extensions/grid';
+import { MtxButtonModule } from '@ng-matero/extensions/button';
+import { NgApexchartsModule } from 'ng-apexcharts';
+
+
 
 
 
 @NgModule({
   declarations: [],
   imports: [
+    MatFormFieldModule,
+    MatInputModule,
+    MatCardModule,
+    MatCheckbox,
+    MatRadioModule,
+    MatLabel,
+    MatProgressSpinnerModule,
     CommonModule,
-    FormsModule
+    FormsModule,
+    MatTableModule,
+    MtxGridModule,
+    MtxButtonModule,
+    NgApexchartsModule
+
   ],
   exports: [
+    MatFormFieldModule,
+    MatCardModule,
+    MatCheckbox,
+    MatRadioModule,
+    MatInputModule,
+    MatLabel,
+    MatProgressSpinnerModule,
     CommonModule,
-    FormsModule
+    FormsModule,
+    MatTableModule,
+    MtxGridModule,
+    MtxButtonModule,
+    NgApexchartsModule
   ]
 })
 export class SharedModule { }

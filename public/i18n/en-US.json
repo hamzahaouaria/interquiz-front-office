@@ -1,6 +1,9 @@
 {
   "menu": {
     "dashboard": "Dashboard",
+    "quizzes": "AI Mission Quiz",
+    "mission-navigator": "AI Mission Navigator",
+    "best-match-resource": "Best Match Resource",
     "design": "Design",
     "design.colors": "Color System",
     "design.icons": "Material Icons",

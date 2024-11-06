@@ -11,14 +11,22 @@
       }
     },
     {
+      "route": "mission-navigator",
+      "name": "mission-navigator",
+      "type": "link",
+      "icon": "navigation"
+    },
+    {
       "route": "quizzes",
       "name": "quizzes",
       "type": "link",
-      "icon": "quizzes",
-      "badge": {
-        "color": "red-50",
-        "value": "5"
-      }
+      "icon": "question_answer"
+    },
+    {
+      "route": "best-match-resource",
+      "name": "best-match-resource",
+      "type": "link",
+      "icon": "star"
     },
     {
       "route": "/",

@@ -214,12 +214,17 @@ export class QuizService {
       {
         "id": 2,
         "questionText": "What are design patterns, and why are they important in software development?",
-        "type": AnswerType.SINGLE,
+        "type": AnswerType.MULTIPLE,
         "explanation": "Design patterns are reusable solutions to common software design problems. They help improve code maintainability and scalability by providing proven templates for solving recurring issues.",
         "answers": [
           {
             "id": 3,
             "text": "Design patterns provide common solutions to common problems, improving code structure.",
+            "isCorrect": true
+          },
+          {
+            "id": 8,
+            "text": "Design patterns are only applicable in object-oriented programming.",
             "isCorrect": true
           },
           {

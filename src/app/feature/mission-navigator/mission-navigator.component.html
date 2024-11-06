@@ -1,0 +1,188 @@
+<mat-card class="mission-form-card d-flex flex-column">
+  <mat-card-header>
+    <mat-card-title>Mission Description</mat-card-title>
+    <mat-card-subtitle>Enter you Mission specialty.</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content class="d-flex flex-column">
+    <!-- Mission Input Field -->
+    <mat-form-field appearance="fill" class="flex-grow-1">
+      <!-- Allow it to grow -->
+      <mat-label>Enter mission description</mat-label>
+      <textarea
+        matInput
+        [(ngModel)]="mission.description"
+        placeholder="Enter mission description"
+        rows="4"
+      ></textarea>
+    </mat-form-field>
+
+    <!-- Mission Level 1 Input Field -->
+    <mat-form-field appearance="fill" class="flex-grow-1">
+      <!-- Allow it to grow -->
+      <mat-label>Enter mission level 1</mat-label>
+      <input
+        matInput
+        [(ngModel)]="mission.level1"
+        placeholder="Enter mission level 1"
+        type="text"
+      />
+    </mat-form-field>
+
+    <!-- Mission Level 2 Input Field -->
+    <mat-form-field appearance="fill" class="flex-grow-1">
+      <!-- Allow it to grow -->
+      <mat-label>Enter mission level 2</mat-label>
+      <input
+        matInput
+        [(ngModel)]="mission.level2"
+        placeholder="Enter mission level 2"
+        type="text"
+      />
+    </mat-form-field>
+
+    <!-- Mission Level 3 Input Field -->
+    <mat-form-field appearance="fill" class="flex-grow-1">
+      <!-- Allow it to grow -->
+      <mat-label>Enter mission level 3</mat-label>
+      <input
+        matInput
+        [(ngModel)]="mission.level3"
+        placeholder="Enter mission level 3"
+        type="text"
+      />
+    </mat-form-field>
+
+    <!-- Get Quiz Button -->
+    <div class="mt-2 d-flex justify-content-center gap-30">
+      <!-- Add margin-top for spacing -->
+
+      <button
+        mat-raised-button
+        [disabled]="loading"
+        color="primary"
+        (click)="submitMission(mission)"
+        class="btn btn-primary d-flex align-items-center justify-content-center"
+      >
+        <div class="d-flex justify-content-center">
+          <div class="p-2">
+            <div>Generate scope tags</div>
+          </div>
+          <div class="p-2">
+            @if (loading) {
+              <mat-spinner color="primary" diameter="20" class="ml-2"></mat-spinner>
+            }
+          </div>
+        </div>
+      </button>
+
+      <button
+        mat-raised-button
+        [disabled]="loadingSeachDocs"
+        color="primary"
+        (click)="setAccuracyForDocs(mission)"
+        class="btn btn-primary d-flex align-items-center justify-content-center"
+      >
+        <div class="d-flex justify-content-center">
+          <div class="p-2">
+            <div>Search documents</div>
+          </div>
+          <div class="p-2">
+            @if (loadingSeachDocs) {
+              <mat-spinner color="primary" diameter="20" class="ml-2"></mat-spinner>
+            }
+          </div>
+        </div>
+      </button>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>mission finder</mat-card-title>
+    <mat-card-subtitle>Upload mission files</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-card class="doc-list-card">
+      <mat-card-header>
+        <mat-card-title>Document List</mat-card-title>
+        <mat-card-subtitle>
+          <div class="d-flex">
+            <button
+              mat-icon-button
+              color="primary"
+              (click)="fileInput.click()"
+              class="btn btn-primary"
+            >
+              <input
+                type="file"
+                #fileInput
+                style="display: none"
+                (change)="onFileSelected($event)"
+              />
+              <div>{{selectedFile?.name | slice:0:15 }}</div>
+              <mat-icon>upload</mat-icon>
+            </button>
+
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="onUpload()"
+              class="btn btn-primary"
+            > Start uploading {{ uploadProgress }}%
+              <mat-icon>start</mat-icon>
+            </button>
+          </div>
+        </mat-card-subtitle>
+        <mat-icon>list</mat-icon>
+      </mat-card-header>
+      <mat-card-content>
+        <mtx-grid [data]="sortedDocFiles()"
+              [columns]="columns"
+              [loading]="loadingSeachDocs"
+              [cellTemplate]="{
+                content: contentTpl,
+                 accuracy: accuracyTpl,
+                 actions:actionsTpl,
+                 name:nameTpl,
+                 matchedWords: macthedTpl
+
+                 }">
+        </mtx-grid>
+
+        <ng-template #contentTpl let-row let-index="index" let-col="colDef">
+          <div>{{row.content | slice:0:40 }}</div>
+        </ng-template>
+
+        <ng-template #macthedTpl let-row let-index="index" let-col="colDef">
+          <div>{{row.matchedWords | slice:0:5 }}</div>
+        </ng-template>
+
+        <ng-template #nameTpl let-row let-index="index" let-col="colDef">
+          <div>{{row.name | slice:0:20 }}</div>
+        </ng-template>
+
+        <ng-template #accuracyTpl let-row let-index="index" let-col="colDef">
+          <div class="btn btn-accent" color="primary">{{row.accuracy | number:'1.2-2'}}%</div>
+            <div style="max-width: 17rem;">
+            <apx-chart
+            [series]="[row.accuracy, 100 - row.accuracy]"
+            [labels]="chartOptions.labels"
+            [chart]="chartOptions.chart"
+            [responsive]="chartOptions.responsive"
+            [colors]="['#4CAF50', '#ffffff']"
+          ></apx-chart>
+          </div>
+
+        </ng-template>
+
+        <ng-template #actionsTpl let-row let-index="index" let-col="colDef">
+          <button class="btn btn-danger" (click)="removeDocFile(row)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </ng-template>
+      </mat-card-content>
+    </mat-card>
+  </mat-card-content>
+</mat-card>
