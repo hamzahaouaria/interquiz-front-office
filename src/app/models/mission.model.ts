@@ -25,6 +25,7 @@ export class Mission {
   yearsOfExperience: string;
   companiesAndClient: string;
   locations: string;
+  question: string;
 
 
   constructor() {
@@ -48,6 +49,7 @@ export class Mission {
     this.yearsOfExperience = '';
     this.companiesAndClient = '';
     this.locations = '';
+    this.question = '';
 
 
   }

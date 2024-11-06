@@ -11,6 +11,7 @@ import { Mission } from 'app/models/mission.model';
 import { DocFileServiceService } from 'app/services/doc-file-service.service';
 import { MissionService } from 'app/services/mission.service';
 import { ApexChart, ApexNonAxisChartSeries, ApexResponsive } from 'ng-apexcharts';
+import { ResourceAskDialogComponent } from './resource-ask-dialog/resource-ask-dialog.component';
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -27,6 +28,7 @@ export type ChartOptions = {
   styleUrl: './best-match-resource.component.scss'
 })
 export class BestMatchResourceComponent {
+
 
   selectedFile: File | null = null;
   uploadProgress: number = 0;
@@ -197,7 +199,26 @@ export class BestMatchResourceComponent {
   }
 
   askAi(doc: DocFile) {
-    throw new Error('Method not implemented.');
+    this.openOriginal(doc,this.mission);
+  }
+
+  openOriginal(doc: DocFile,mission: Mission) {
+    const dialogRef = this.mtxDialog.originalOpen(ResourceAskDialogComponent, {
+      width: '60%',
+      data: {
+        docfile:doc,
+        mission: mission
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      doc.qualification = result.qualification;
+
+    });
+  }
+
+  keyUpOnSearch() {
+    this.mission.description = this.searchContent;
   }
 
 

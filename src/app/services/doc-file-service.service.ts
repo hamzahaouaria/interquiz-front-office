@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class DocFileServiceService {
 
+
   private apiUrl = `http://localhost:8081/api/v1/doc-file`;
 
   constructor(private http: HttpClient) {}
@@ -55,5 +56,9 @@ export class DocFileServiceService {
       a.click();
       window.URL.revokeObjectURL(url); // Clean up URL object after download
     });
+  }
+
+  getQualifications(docfile: DocFile, mission: Mission) {
+    return this.http.post<DocFile>(`${this.apiUrl}/ask-for-qualification/${docfile.id}`, mission);
   }
 }

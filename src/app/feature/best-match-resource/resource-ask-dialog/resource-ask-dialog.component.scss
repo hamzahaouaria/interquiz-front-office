@@ -1,0 +1,67 @@
+// Variables for color and animation speed
+
+.mat-mdc-dialog-title, .mdc-dialog__titl{
+  background-color: rgb(66, 66, 66);
+  color:white
+}
+.q-text{
+  font-size: 1.1rem;
+  background-color: rgb(210 231 240);
+  border-radius: 2rem 0rem 2rem 0rem;
+  padding: 1rem;
+  margin: 1rem;
+  font-weight: 500;
+  color: #000;
+  margin: 1rem;
+}
+.custom-chat-btn {
+  background-color: #53c8dd; // Your custom color
+  color: #ffffff; // Set icon color if needed
+}
+
+
+$loader-background: #e0e0e0;
+$loader-highlight: #f5f5f5;
+$animation-speed: 1.5s;
+
+// Skeleton loader animation
+@keyframes loading {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: 200px 0;
+  }
+}
+
+// Loader class for reusable skeleton loader
+.loader {
+  display: inline-block;
+  background: linear-gradient(
+    90deg,
+    $loader-background 25%,
+    $loader-highlight 50%,
+    $loader-background 75%
+  );
+  background-size: 200% 100%;
+  animation: loading $animation-speed ease-in-out infinite;
+  border-radius: 4px;
+}
+
+// Define different shapes for the loader
+.loader--text {
+  height: 1rem;
+  width: 100%;
+  margin: 0.5rem 0;
+}
+
+.loader--circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.loader--rectangle {
+  height: 10rem;
+  width: 100%;
+}

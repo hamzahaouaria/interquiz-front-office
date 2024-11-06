@@ -10,6 +10,7 @@ export class DocFile {
   accuracy: number = 0;
   matchedWords: string[] = [];
   idealMission:Mission = new Mission();
+  qualification: string = '';
 
   constructor(
     id: string,
@@ -20,7 +21,8 @@ export class DocFile {
     resume: string,
     accuracy: number,
     matchedWords: string[],
-    idealMission:Mission
+    idealMission:Mission,
+    qualification: string,
   ) {
     this.id = id;
     this.name = name;
@@ -31,5 +33,6 @@ export class DocFile {
     this.accuracy = accuracy;
     this.matchedWords = matchedWords;
     this.idealMission = idealMission;
+    this.qualification = qualification;
   }
 }
