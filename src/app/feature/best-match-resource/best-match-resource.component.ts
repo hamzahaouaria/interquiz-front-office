@@ -29,8 +29,8 @@ export type ChartOptions = {
 })
 export class BestMatchResourceComponent {
 
-
   selectedFile: File | null = null;
+  selectedFiles: File[] | null = null;
   uploadProgress: number = 0;
   docFiles: DocFile[] = [];
   loadingSeachDocs: boolean = false;
@@ -128,27 +128,64 @@ export class BestMatchResourceComponent {
 
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
-    if (input && input.files) {
-      this.selectedFile = input.files[0] ?? null;
-      console.log('Selected file:', this.selectedFile);
+    if (input && input.files && input.files.length > 0) {
+      this.selectedFiles = Array.from(input.files);
+      this.selectedFile = this.selectedFiles[0];
+      console.log('Selected file:', this.selectedFiles);
     }
   }
 
   onUpload() {
-    if (!this.selectedFile) return;
+    if (this.selectedFiles==null || this.selectedFiles.length === 0) return;
 
-    const formData = new FormData();
-    formData.append('file', this.selectedFile);
-    this.docFileService.uploadFile(formData).subscribe(event => {
-      if (event.type === HttpEventType.UploadProgress && event.total) {
-        this.uploadProgress = Math.round((100 * event.loaded) / event.total);
-      } else if (event.type === HttpEventType.Response) {
-        this.uploadProgress = 0;
-        this.alert("upload success");
+    const failedUploads: File[] = [];
+    let currentFileIndex = 0;
+    const totalFiles = this.selectedFiles.length;
+    const progressPerFile = 100 / totalFiles;
+
+    const uploadNextFile = () => {
+      if (currentFileIndex >= totalFiles) {
+        // All files processed, notify success/failure
+        if (failedUploads.length > 0) {
+          this.alert(`Upload complete with errors. Failed to upload: ${failedUploads.map(file => file.name).join(', ')}`);
+        } else {
+          this.alert("All files uploaded successfully!");
+        }
         this.loadDocFiles();
+        return;
       }
-    });
+      if (this.selectedFiles == null) return;
+
+      const file = this.selectedFiles[currentFileIndex];
+      this.selectedFile = file;
+      const formData = new FormData();
+      formData.append('file', file);
+
+      this.docFileService.uploadFile(formData).subscribe({
+        next: (event) => {
+          if (event.type === HttpEventType.UploadProgress && event.total) {
+            // Update total progress based on file index and current file's progress
+            const fileProgress = Math.round((100 * event.loaded) / event.total);
+            this.uploadProgress = Math.round((currentFileIndex * progressPerFile) + (fileProgress / totalFiles));
+          } else if (event.type === HttpEventType.Response) {
+            // File upload complete, move to the next file
+            this.uploadProgress = Math.round((currentFileIndex + 1) * progressPerFile); // Update total progress
+            currentFileIndex++;
+            uploadNextFile(); // Proceed to the next file
+          }
+        },
+        error: (err) => {
+          console.error(`Error uploading file ${file.name}`, err);
+          failedUploads.push(file); // Add to failed uploads list
+          currentFileIndex++;
+          uploadNextFile(); // Proceed to the next file
+        },
+      });
+    };
+
+    uploadNextFile(); // Start the upload process
   }
+
 
   alert(msg: string) {
     this.mtxDialog.alert(msg, '', () => {

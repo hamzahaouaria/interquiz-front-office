@@ -54,29 +54,38 @@
   <div class="container ">
     <div class="row">
       <div class="col-12">
-        <div class="d-flex justify-content-between align-items-center my-3">
-
-        <mat-card class="w-100">
+        <mat-card class="w-100 my-3">
           <mat-card-header>
-            <mat-card-title>Search resource with AI</mat-card-title>
-
+            <mat-card-title>Search Resource with AI</mat-card-title>
           </mat-card-header>
           <mat-card-content>
-              <div class="d-flex justify-content-between align-items-center my-3">
-                <div class="col-9">
-                  <input type="text" class="form-control py-2 h-100" placeholder="Search..." (keyup)="keyUpOnSearch()" [(ngModel)]="searchContent">
-                </div>
-                <div class="col-3">
-                  <button class="btn btn-primary  d-flex align-items-center justify-content-center gap-3" (click)="onSearchClick()">
-                  <div>Search</div>
-                  <mat-icon class="ml-2">search</mat-icon>
-                  </button>
+            <div class="d-flex align-items-center gap-3">
+              <!-- Search Input -->
+              <div class="flex-grow-1">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Type to search..."
+                  (keyup.enter)="onSearchClick()"
+                  [(ngModel)]="searchContent"
+                />
               </div>
-              </div>
+
+              <!-- Search Button -->
+              <button
+                mat-raised-button
+                color="primary"
+                class="btn btn-primary d-flex align-items-center justify-content-center gap-2"
+                (click)="onSearchClick()"
+              >
+                <span>Search</span>
+                <mat-icon>search</mat-icon>
+              </button>
+            </div>
           </mat-card-content>
         </mat-card>
-        </div>
       </div>
+
     </div>
 
     <div class="row">
@@ -195,41 +204,58 @@
               <mat-card-title>Upload File</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <div class="d-flex w-100 gap-3">
-                  <div class="w-50 pr-2">
-                  <button
-                    mat-icon-button
-                    color="primary"
-                    (click)="fileInput.click()"
-                    class="btn btn-success w-100"
-                  >
-                    <input
+              <div class="d-flex flex-column align-items-center w-100 gap-3">
+                <!-- File Selection Button -->
+                <button
+                  mat-icon-button
+                  color="primary"
+                  (click)="fileInput.click()"
+                  class="btn btn-primary w-75 mb-3 d-flex align-items-center justify-content-center"
+                >
+                  <input
                     type="file"
+                    multiple
                     #fileInput
                     style="display: none"
                     (change)="onFileSelected($event)"
-                    />
-                    <div>{{selectedFile?.name | slice:0:15 }}</div>
-                    <mat-icon>upload</mat-icon>
-                  </button>
-                  </div>
-                  <div class="w-50 pl-2">
-                    <button
-                    *ngIf="selectedFile"
-                    mat-raised-button
-                    color="primary"
-                    (click)="onUpload()"
-                    class="btn btn-info w-100 text-white"
+                  />
+                  <span class="text-truncate">{{ selectedFile?.name || 'Select Files' }}</span>
+                  <mat-icon class="ml-2">upload</mat-icon>
+                </button>
+
+                <!-- Upload Button -->
+                <button
+                  *ngIf="selectedFile"
+                  mat-raised-button
+                  color="accent"
+                  (click)="onUpload()"
+                  class="btn btn-info w-75 text-white mb-3 d-flex align-items-center justify-content-center"
+                >
+                  Start Uploading
+                  <mat-icon class="ml-2">cloud_upload</mat-icon>
+                </button>
+
+                <!-- Progress Bar -->
+                <div class="w-75">
+                  <div class="progress">
+                    <div
+                      class="progress-bar progress-bar-striped bg-success"
+                      role="progressbar"
+                      [style.width.%]="uploadProgress"
+                      [attr.aria-valuenow]="uploadProgress"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
                     >
-                    Start uploading {{ uploadProgress }}%
-                    <mat-icon>start</mat-icon>
-                    </button>
+                      {{ uploadProgress }}%
+                    </div>
                   </div>
                 </div>
+              </div>
             </mat-card-content>
           </mat-card>
         </div>
       </div>
+
 
       <div class="row" style="min-height: 20rem;">
 
