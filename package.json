@@ -11,7 +11,8 @@
     "build:prod": "ng build --prod",
     "lint": "ng lint --fix && npm run lint:scss",
     "lint:ts": "eslint \"src/**/*.ts\" --fix",
-    "lint:scss": "stylelint \"src/**/*.scss\" --fix"
+    "lint:scss": "stylelint \"src/**/*.scss\" --fix",
+    "clean": "rimraf ./dist ./node_modules"
   },
   "private": true,
   "dependencies": {
